@@ -1,0 +1,38 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: sagaDemo
+  cloud:
+    consul:
+      discovery:
+        instanceId: ${spring.application.name}:${random.value}
+      host: localhost
+      port: 8500
+
+axon:
+  distributed:
+    enabled: true
+    load-factor: 100
+    spring-cloud:
+      fallback-to-http-get: true
+      fallback-url: /message-routing-information
+  kafka:
+    bootstrap-servers:
+      - localhost:9092
+    default-topic: sagaDemo
+    producer:
+      transaction-id-prefix: sagaDemo
+  eventhandling:
+    processors:
+      projections:
+        threadCount: 4
+
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework: INFO
+      axonframework: INFO
